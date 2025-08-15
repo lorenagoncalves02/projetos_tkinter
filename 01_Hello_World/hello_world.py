@@ -26,6 +26,15 @@ label_titulo = tk.Label(janela,
                         )
 #pedir pra inserir o label na janela
 label_titulo.pack()
+# permitir que a entrada e captura de texto
+label_nome = tk.Label(janela,
+                      text = "Digite seu nome: ",
+                      bg= "#66091b",
+                      font="Arial",
+                      foreground= "#fbfbfb",
+                      height= 1)
+label_nome.pack()
+
 
 # caixa de texto para a pessoa digitar seu nome
 colocar_nome = tk.Entry(janela)
@@ -42,14 +51,6 @@ label_resultado = tk.Label(janela,
 label_resultado.pack()
 
 
-# permitir que a entrada e captura de texto
-label_nome = tk.Label(janela,
-                      text = "Digite seu nome: ",
-                      bg= "#66091b",
-                      font="Arial",
-                      foreground= "#fbfbfb",
-                      height= 1)
-label_nome.pack()
 
 
 # loop pra manter a janela aberta
