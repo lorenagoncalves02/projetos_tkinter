@@ -1,6 +1,7 @@
 import ttkbootstrap as tk
 
 class Janela_principal:
+    #3 aspas pra documentar os códigos e facilitar
     """Classe para a criação da janela principal"""
 
     def __init__(self):
