@@ -53,15 +53,15 @@ class Janela_principal:
 
         # permitir que a entrada e captura de texto
 
-    def run():
+    def run(self):
         """Inicie a janela"""
         # loop pra manter a janela aberta
-        janela.mainloop()
+        self.janela.mainloop()
 
 
-#função para o botão funcionar
-def mostrar_nome():
-    #3 aspas pra documentar os códigos e facilitar
-    """Esta função pega o nome digitado na caixa de texto e deseja um bom dia"""
-    escrever_nome = colocar_nome.get() #get é pra pegar o texto digitado na caixa 
-    label_resultado.configure(text = f"Bom dia, {escrever_nome}!")
+        #função para o botão funcionar
+    def mostrar_nome(self):
+        #3 aspas pra documentar os códigos e facilitar
+        """Esta função pega o nome digitado na caixa de texto e deseja um bom dia"""
+        escrever_nome = self.colocar_nome.get() #get é pra pegar o texto digitado na caixa 
+        self.label_resultado.configure(text = f"Bom dia, {escrever_nome}!")
