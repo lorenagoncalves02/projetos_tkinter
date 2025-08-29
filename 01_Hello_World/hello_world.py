@@ -1,65 +1,56 @@
 import tkinter as tk
 
-def mostrar_nome():
-    escrever_nome = colocar_nome.get()
-    label_resultado.config(text = f"Bom dia, {escrever_nome}!")
-
-# criando uma janela
-# Tk (com a primeira maiuscula) é uma classe
+#Criando janela
 janela = tk.Tk()
-janela.title("Janela Da Lolo")
-# pra colocar título na janela
+janela.title("Janela_Personalizada_Ana")
+#Mudando o tamanho da tela
+janela.geometry("500x500+180+0")
+#Permitindo a mudança da janela
+janela.resizable(True,True)
+#Mudando a cor da janela
+janela.configure(bg="#1b22a7")
+#Mudar o icone da janela
+janela.iconbitmap("01_Hello_World/computador.ico")
 
-# configurando a janela
-janela.configure(bg="#66091b") # colocar uma cor na janela
-janela.iconbitmap("01_Hello_World/fox.ico") # caminho de um ícone
-janela.geometry("800x400+200+300") # arrumar o tamanho da tela
-janela.resizable(True, True) # pro usuário não editar o tamanho da janela
+#Widgets
+def mostrar():
+    """ESta função coleta o noem colocado na caixa de texto e deseja um bom dia."""
+    n = c_n.get()
+    res.configure(text=f"Bom dia {n}!!!")
+#Adicionando texto e modificando
+tet = tk.Label(janela, 
+               text="Hello World", 
+               background="#1b22a7", 
+               foreground="#FFFFFF",
+               font="Times-New-Roman")
+tet.pack(pady=30)
 
+#Vai indicar o que o usuario deve fazer
+l_nome = tk.Label(janela,
+                text="Digite o seu nome:",
+                background="#1b22a7", 
+                foreground="#FFFFFF",
+                font="Times-New-Roman",)
+l_nome.pack()
 
+#Criar uma caixa de texto
+c_n = tk.Entry(janela)
+c_n.pack()
 
-# criando os widgets (os componentes)
-# criando o titulo e formatando
-label_titulo = tk.Label(janela,
-                        text="Hello World!",
-                        bg="#66091b",
-                        font="Arial",
-                        foreground="#fefeff",
-                        )
-#pedir pra inserir o label na janela
-label_titulo.pack()
+#
+b_bd = tk.Button(janela,
+                 text="Desejar bom dia!!!",
+                 height=2,
+                 command= mostrar)
+b_bd.pack(pady=20)
 
-label_nome = tk.Label(janela,
-                      text = "Digite seu nome: ",
-                      bg= "#66091b",
-                      font="Arial",
-                      foreground= "#fbfbfb",
-                      height= 1)
-label_nome.pack()
+#label que vai aparecer o bom dia
+res = tk.Label(janela,
+               text="",
+               background="#1b22a7",
+               foreground="#FFFFFF")
+res.pack()
 
-# caixa de texto para a pessoa digitar seu nome
-colocar_nome = tk.Entry(janela)
-colocar_nome.pack()
-
-# botão para o programa desejar bom dia
-botao_nome = tk.Button(janela,
-                       text = "Desejar Bom dia",
-                       command = mostrar_nome,
-                       bg= "#b31e3b",
-                       font="Arial",
-                       foreground= "#000000")
-
-botao_nome.pack(pady=5)
-
-label_resultado = tk.Label(janela,
-                           text= "")
-label_resultado.pack()
-
-
-# permitir que a entrada e captura de texto
-
-
-
-# loop pra manter a janela aberta
+#Loop para manter a janela aberta
 janela.mainloop()
 
