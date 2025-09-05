@@ -14,8 +14,8 @@ class Gemini_Bot:
                 """
         
         self.model = genai.GenerativeModel(
-            model_name+'gemini-1.5-flash',
-            system_instruction=instrucao_sistema
+            model_name='gemini-1.5-flash',
+            system_instruction=introducao_sistema
         )
 
 
@@ -31,4 +31,10 @@ class Gemini_Bot:
         response = self.chat.send_message(pergunta)
         return response.text
     
-
+# o if só será executado se eu rodar o arquivo diretamente
+# caso eu importe, essa parte não será executada
+# pode ser utilizada para testes
+if __name__ == "__main__":
+    robo = Gemini_Bot()
+    resposta = robo.enviar_mensagem("Qual é o animal mais lindo do mundo?")
+    print(resposta)
