@@ -21,7 +21,7 @@ class Janela_chat():
 
 
         self.label_especialista = tk.Label(self.janela, text = "Sou especialista em atrasos.", 
-               background="#7d1c1c", 
+               background="#660d0d", 
                foreground="#FFFFFF",
                font="Times-New-Roman")
         self.label_especialista.pack(pady=(100,0))
@@ -29,8 +29,8 @@ class Janela_chat():
 
         self.label_nome = tk.Label(self.janela,
                 text="Digite a sua dúvida:",
-                background="#7d1c1c", 
-                foreground="#FFFFFF",
+                background="#660d0d", 
+                foreground="#FFFEFE",
                 font="Times-New-Roman")
         self.label_nome.pack(pady=20)
 
@@ -47,10 +47,14 @@ class Janela_chat():
 
 
         self.resposta = tk.Label(self.janela,
-                                 text = "RESPOSTA:"
+                                 text = "RESPOSTA:",
+                                 background= "#660d0d",
+                                 foreground= "#ffffff"
                                  )
         self.resposta.pack(pady=(0,0))
 
+        self.st = tk.ScrolledText(self.janela, height = 10, wrap="word")
+        self.st.pack(pady=10, padx=10, fill="both", expand=True)
 
         #criando o objeto robo(instanciando a classe)
         self.robo = Gemini_Bot()
@@ -62,7 +66,9 @@ class Janela_chat():
         resposta = self.robo.enviar_mensagem(pergunta)
         self.resposta.config(text = resposta)
 
-        
+        self.st.delete("1.0",tk.END)
+        self.st.insert("1.0",resposta)
+
 
 
     def run(self):
