@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import scrolledtext
 from classe_bot_gemini import Gemini_Bot
 # o as é pra mudar o nome, basicamente dar um apelido
 # e chamar ele do jeito que eu quiser
@@ -53,7 +54,7 @@ class Janela_chat():
                                  )
         self.resposta.pack(pady=(0,0))
 
-        self.st = tk.ScrolledText(self.janela, height = 10, wrap="word")
+        self.st = scrolledtext.ScrolledText(self.janela, height = 10, wrap="word")
         self.st.pack(pady=10, padx=10, fill="both", expand=True)
 
         #criando o objeto robo(instanciando a classe)
@@ -64,7 +65,7 @@ class Janela_chat():
     def responder(self):
         pergunta = self.entry_pergunta.get()
         resposta = self.robo.enviar_mensagem(pergunta)
-        self.resposta.config(text = resposta)
+
 
         self.st.delete("1.0",tk.END)
         self.st.insert("1.0",resposta)
