@@ -1,5 +1,6 @@
 import ttkbootstrap as tk
 import tkinter.messagebox
+from class_lista_tarefas import Lista_tarefas
 
 class Login():
 
@@ -53,7 +54,11 @@ class Login():
 
 
         if usuario == "Lorena" or senha == "1234":
-            tkinter.messagebox.showinfo(title = "Login efetuado",message=(f"Bem-vindo, {usuario}"))
+            tkinter.messagebox.showinfo(title = "Login efetuado",message=(f"Bem-vindo, {usuario}. Pressione 'ok' para continuar"))
+            self.janela.destroy()
+            janela_tarefas = Lista_tarefas()
+            janela_tarefas.run()
+
 
         else:
             tkinter.messagebox.showerror(title= "ERRO", message="valores incorretos")
@@ -74,4 +79,5 @@ class Login():
 if __name__ == "__main__":
     login = Login()
     login.run()
+
 
