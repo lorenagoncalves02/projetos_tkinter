@@ -59,9 +59,9 @@ class Login():
             tkinter.messagebox.showerror(title= "ERRO", message="valores incorretos")
 
     def sair(self):
-        sair = tkinter.messagebox.askquestion(title= "SAIR", message="Você deseja mesmo sair?")
+        self.sair = tkinter.messagebox.askyesno(title= "SAIR", message="Você deseja mesmo sair?")
 
-        if sair == "yes":
+        if self.sair == True:
             exit()
 
 
