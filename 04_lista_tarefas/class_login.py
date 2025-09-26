@@ -4,7 +4,6 @@ from class_lista_tarefas import Lista_tarefas
 
 class Login():
 
-
     def __init__(self):
         self.janela = tk.Window(themename= "morph")
         self.janela.title("Login")
