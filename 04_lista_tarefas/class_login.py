@@ -1,6 +1,7 @@
 import ttkbootstrap as tk
 import tkinter.messagebox
 from class_lista_tarefas import Lista_tarefas
+import tkinter
 
 class Login():
 

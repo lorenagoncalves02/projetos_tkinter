@@ -64,11 +64,13 @@ class Lista_tarefas():
         # funçao p botao de excluir
     def excluir_tarefa(self):
         #selecionar os itens que quer excluir
-        excluir = self.caixa_de_tarefas.curselection()
+        excluir = self.caixa_de_tarefas.curselection() #retorna o indice selecionado
 
         if excluir:
             tarefa_escolhida = excluir[0]
             self.caixa_de_tarefas.delete(tarefa_escolhida)
+        else:
+            messagebox.showerror(message="Selecione um item antes de excluir")
 
     def concluir_tarefa(self):
         tarefa_selecionada = self.caixa_de_tarefas.curselection()
@@ -90,10 +92,6 @@ class Lista_tarefas():
                 self.caixa_de_tarefas.delete(indice)
                 #substituir a tarefa na mesma posição
                 self.caixa_de_tarefas.insert(indice,tarefa_concluida)
-
-
-        
-           
 
 
 
