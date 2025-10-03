@@ -75,6 +75,8 @@ class Lista_tarefas():
         #fechei a conexão (posso usar so a conexao.close q ja fecha o cursor)
         cursor.close()
         conexao.close()
+
+        self.atualizar_lista()
 #------------------------------------------------------------------------------------------
 
     def atualizar_lista(self):
@@ -128,6 +130,16 @@ class Lista_tarefas():
             self.caixa_de_tarefas.delete(tarefa_escolhida)
         else:
             messagebox.showerror(message="Selecione um item antes de excluir")
+
+        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+        cursor = conexao.cursor()
+
+        cursor.execute("""
+                        DELETE FROM tarefa WHERE id = 
+                       """)
+        conexao.commit()
+        cursor.close()
+        conexao.close()
 
     def concluir_tarefa(self):
         tarefa_selecionada = self.caixa_de_tarefas.curselection()
