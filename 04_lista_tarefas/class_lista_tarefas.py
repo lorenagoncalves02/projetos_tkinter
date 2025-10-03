@@ -77,6 +77,7 @@ class Lista_tarefas():
         conexao.close()
 #------------------------------------------------------------------------------------------
 
+    def atualizar_lista(self):
         #atualizar a lista
         conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
 
@@ -91,9 +92,9 @@ class Lista_tarefas():
         cursor.close()
         conexao.close()
 
-
-
-
+        #inserindo os itens na listbox
+        for linha in lista_de_tarefas:
+            self.caixa_de_tarefas.insert("end", linha[1])
 
 
 
