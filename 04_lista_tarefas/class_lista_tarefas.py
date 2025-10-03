@@ -51,15 +51,68 @@ class Lista_tarefas():
                                         command=self.concluir_tarefa,
                                         text="concluir tarefa")
         self.botao_concluir.pack(side="right",padx=(70,0),pady=(10,0))
+#-------------------------------------------------------------------------------------------
 
-        # dar nome pro banco de dados
-        conexao = sqlite3.connect('bd_lista_tarefa.sqlite')
+        #conectando ao banco de dados
+        #dar nome pro banco de dados
+        #colocar o nome da pasta onde eu quero guardar o banco de dados
+        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+
+        #cursor é responsável por comandar o banco de dados
         cursor = conexao.cursor()
+
+        # criar as tabelas
+        cursor.execute(""" 
+                            CREATE TABLE IF NOT EXISTS tarefa(
+                            codigo integer primary key autoincrement, 
+                            descricao_tarefa varchar(200)
+                            );
+                         """)
+        
+        #comitei as alterações
+        conexao.commit()
+
+        #fechei a conexão (posso usar so a conexao.close q ja fecha o cursor)
+        cursor.close()
+        conexao.close()
+#------------------------------------------------------------------------------------------
+
+        #atualizar a lista
+        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+
+        cursor = conexao.cursor()
+        cursor.execute("""
+                        SELECT codigo, descricao_tarefa FROM tarefa;
+                       """)
+        
+        lista_de_tarefas = cursor.fetchall()
+
+
+        cursor.close()
+        conexao.close()
+
+
+
+
+
 
 
         # funçao p botao de adicionar
     def adicionar_tarefa(self):
         tarefa = self.entry_adicionar.get()
+
+        #criando a tabela pra conseguir inserir os dados
+        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+        cursor = conexao.cursor()
+
+        cursor.execute("""
+                        INSERT INTO tarefa(descricao_tarefa)
+                        VALUES(?)
+                       """, [tarefa])
+
+        conexao.commit()
+        cursor.close()
+        conexao.close()
 
         if tarefa :
             self.caixa_de_tarefas.insert(tk.END,tarefa)
@@ -95,7 +148,6 @@ class Lista_tarefas():
                 self.caixa_de_tarefas.delete(indice)
                 #substituir a tarefa na mesma posição
                 self.caixa_de_tarefas.insert(indice,tarefa_concluida)
-
 
 
     def run(self):
