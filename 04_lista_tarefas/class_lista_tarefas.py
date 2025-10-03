@@ -3,6 +3,7 @@ import tkinter as tki
 from tkinter import messagebox
 from tkinter import Listbox
 from tkinter import END
+import sqlite3
 
 class Lista_tarefas():
     def __init__(self):
@@ -50,8 +51,10 @@ class Lista_tarefas():
                                         command=self.concluir_tarefa,
                                         text="concluir tarefa")
         self.botao_concluir.pack(side="right",padx=(70,0),pady=(10,0))
-        
 
+        # dar nome pro banco de dados
+        conexao = sqlite3.connect('bd_lista_tarefa.sqlite')
+        cursor = conexao.cursor()
 
 
         # funçao p botao de adicionar
