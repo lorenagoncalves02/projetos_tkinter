@@ -65,7 +65,8 @@ class Lista_tarefas():
         cursor.execute(""" 
                             CREATE TABLE IF NOT EXISTS tarefa(
                             codigo integer primary key autoincrement, 
-                            descricao_tarefa varchar(200)
+                            descricao_tarefa varchar(200),
+                            status BOOLEAN 
                             );
                          """)
         
@@ -109,9 +110,9 @@ class Lista_tarefas():
         cursor = conexao.cursor()
 
         cursor.execute("""
-                        INSERT INTO tarefa(descricao_tarefa)
-                        VALUES(?)
-                       """, [tarefa])
+                        INSERT INTO tarefa(descricao_tarefa,status)
+                        VALUES(?,?)
+                       """,(tarefa,0))
 
         conexao.commit()
         cursor.close()
@@ -124,22 +125,28 @@ class Lista_tarefas():
     def excluir_tarefa(self):
         #selecionar os itens que quer excluir
         excluir = self.caixa_de_tarefas.curselection() #retorna o indice selecionado
+        print(excluir)
 
         if excluir:
             tarefa_escolhida = excluir[0]
             self.caixa_de_tarefas.delete(tarefa_escolhida)
         else:
             messagebox.showerror(message="Selecione um item antes de excluir")
+#--------------------------------------------------------------------------------------------------
 
         conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
         cursor = conexao.cursor()
 
-        cursor.execute("""
-                        DELETE FROM tarefa WHERE id = 
+        cursor.execute(f"""
+                        DELETE from tarefa
+                        WHERE codigo = {excluir}
                        """)
+
         conexao.commit()
         cursor.close()
         conexao.close()
+        
+#---------------------------------------------------------------------------------------------------
 
     def concluir_tarefa(self):
         tarefa_selecionada = self.caixa_de_tarefas.curselection()
@@ -161,7 +168,20 @@ class Lista_tarefas():
                 self.caixa_de_tarefas.delete(indice)
                 #substituir a tarefa na mesma posição
                 self.caixa_de_tarefas.insert(indice,tarefa_concluida)
+#----------------------------------------------------------------------------------
 
+        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+        cursor = conexao.cursor()
+
+        cursor.execute(f"""
+                        UPDATE tarefa
+                        SET status = 1
+                        WHERE codigo = {tarefa_selecionada[0]+1}
+                       """)
+
+        conexao.commit()
+        cursor.close()
+        conexao.close()
 
     def run(self):
         """Iniciar a janela"""
