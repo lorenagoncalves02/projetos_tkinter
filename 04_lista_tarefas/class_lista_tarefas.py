@@ -3,7 +3,9 @@ import tkinter as tki
 from tkinter import messagebox
 from tkinter import Listbox
 from tkinter import END
+from class_login import Login
 import sqlite3
+
 
 class Lista_tarefas():
     def __init__(self):
@@ -77,7 +79,13 @@ class Lista_tarefas():
         cursor.close()
         conexao.close()
 
+        janela_login = Login(self.janela)
+        
+     # esconder a tarefa
+        self.janela.withdraw()
+
         self.atualizar_lista()
+
 #------------------------------------------------------------------------------------------
 
     def atualizar_lista(self):

@@ -1,16 +1,20 @@
 import ttkbootstrap as tk
 import tkinter.messagebox
-from class_lista_tarefas import Lista_tarefas
 import tkinter
 
 class Login():
 
-    def __init__(self):
-        self.janela = tk.Window(themename= "morph")
+    def __init__(self, janela_pai):
+        self.janela_pai = janela_pai
+
+        self.janela = tk.Toplevel(janela_pai)
         self.janela.title("Login")
 
         self.janela.geometry("800x600") # arrumar o tamanho da tela
         self.janela.resizable(True, True)
+
+        # configurando para que quando feche o login, ele encerre o programa
+        self.janela.protocol("WM_DELETE_WINDOW", self.sair)
 
 #-------------------------------------------------------------------------------
         self.titulo = tk.Label(self.janela,
@@ -37,7 +41,7 @@ class Login():
         self.colocar_senha.pack(pady=(5,20))
 #----------------------------------------------w--------------------------------
 
-        frame_botao = tk.Frame()
+        frame_botao = tk.Frame(self.janela)
         frame_botao.pack()
 
 
@@ -56,8 +60,11 @@ class Login():
         if usuario == "Lorena" or senha == "1234":
             tkinter.messagebox.showinfo(title = "Login efetuado",message=(f"Bem-vindo, {usuario}. Pressione 'ok' para continuar"))
             self.janela.destroy()
-            janela_tarefas = Lista_tarefas()
-            janela_tarefas.run()
+            #reexiba a janela principal
+            self.janela_pai.deiconify()
+        #     janela_tarefas = Lista_tarefas()
+        #     janela_tarefas.run()
+
 
 
         else:
