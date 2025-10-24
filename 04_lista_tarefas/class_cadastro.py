@@ -28,28 +28,40 @@ class Janela_cadastro():
         self.entry_nome = tk.Entry(self.janela_cadastro)
         self.entry_nome.pack()
 
+        #usuario
+        self.titulo = tk.Label(self.janela_cadastro,
+                               text = "Digite seu nome de usuário:",
+                               font="arial, 15")
+        self.titulo.pack(pady=(10,0))
+
         # criando a caixa de texto do usuário
         self.entry_usuario = tk.Entry(self.janela_cadastro)
         self.entry_usuario.pack()
 
+        #senha
+        self.titulo = tk.Label(self.janela_cadastro,
+                               text = "Digite sua senha:",
+                               font="arial, 15")
+        self.titulo.pack(pady=(10,0))
+
         # criando a caixa de texto de senha
         self.entry_senha = tk.Entry(self.janela_cadastro)
-        self.entry_senha.pack
+        self.entry_senha.pack()
 
-        tk.Button(self.janela_cadastro, text="Cadastrar")
+        tk.Button(self.janela_cadastro, text="Cadastrar", command=self.inserir_usuario).pack()
 
         self.criar_tabela_usuario()
 
     def criar_tabela_usuario(self):
 
-        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
+        conexao = sqlite3.connect("./bd_lista_tarefa.sqlite")
 
         cursor = conexao.cursor()
 
         cursor.execute("""
                         CREATE TABLE IF NOT EXISTS usuario (
                             nome VARCHAR(80),
-                            usuario VARCHAR(20),
+                            usuario VARCHAR(20) primary key,
                             senha VARCHAR(20))
                        """)
         
@@ -57,32 +69,42 @@ class Janela_cadastro():
         conexao.close()
 
     def inserir_usuario(self):
-        
-        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
+        try:
+            #pegar os textos do campo de entrada
+            nome = self.entry_nome.get()
+            usuario = self.entry_usuario.get()
+            senha = self.entry_senha.get()
+            
+            conexao = sqlite3.connect("./bd_lista_tarefa.sqlite")
 
-        cursor = conexao.cursor()
+            cursor = conexao.cursor()
 
-        nome = self.entry_nome
-        usuario = self.entry_usuario
-        senha = self.entry_senha
+            cursor.execute("""
+                            INSERT INTO usuario (nome, usuario, senha)
+                            VALUES (?, ?, ?)
+                        """,
+                        (nome, usuario, senha)
+                        )
+            
+            conexao.commit()
+            conexao.close()
 
-        cursor.execute("""
-                        INSERT INTO usuario (nome, usuario, senha)
-                        VALUES (?, ?, ?)
-                       """,
-                       (nome, usuario, senha)
-                       )
-        
-        conexao.commit()
-        conexao.close
+            messagebox.showinfo("SUCESSO","Usuário cadastrado com sucesso!")
+        #apagar o texto depois que cadastrar
+            self.entry_nome.delete(0,'end')
+            self.entry_usuario.delete(0,'end')
+            self.entry_senha.delete(0,'end')
 
+        except:
+            messagebox.showerror("ERRO", "Erro ao cadastrar")
 
     def run(self):
         self.janela_cadastro.mainloop()
 
+        
+
 # chamando sem nenhuma janela pai, so p testar
 if __name__ == "__main__":
 
-    janela_cadastro = Janela_cadastro("u65d75")
+    janela_cadastro = Janela_cadastro("fghdfv")
     janela_cadastro.run()
-    

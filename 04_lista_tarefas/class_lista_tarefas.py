@@ -58,7 +58,7 @@ class Lista_tarefas():
         #conectando ao banco de dados
         #dar nome pro banco de dados
         #colocar o nome da pasta onde eu quero guardar o banco de dados
-        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+        conexao = sqlite3.connect("./bd_lista_tarefa.sqlite")
 
         #cursor é responsável por comandar o banco de dados
         cursor = conexao.cursor()
@@ -80,7 +80,8 @@ class Lista_tarefas():
         conexao.close()
 
         janela_login = Login(self.janela)
-        
+
+
      # esconder a tarefa
         self.janela.withdraw()
 
@@ -136,19 +137,20 @@ class Lista_tarefas():
         print(excluir)
 
         if excluir:
-            tarefa_escolhida = excluir[0]
-            self.caixa_de_tarefas.delete(tarefa_escolhida)
+            self.tarefa_escolhida = self.caixa_de_tarefas.get(excluir)
+            self.caixa_de_tarefas.delete(excluir)
         else:
             messagebox.showerror(message="Selecione um item antes de excluir")
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 
         conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
         cursor = conexao.cursor()
 
-        cursor.execute(f"""
+        cursor.execute("""
                         DELETE from tarefa
-                        WHERE codigo = {excluir}
-                       """)
+                        WHERE descricao_tarefa = (?)
+                       """,
+                       [])
 
         conexao.commit()
         cursor.close()
@@ -162,20 +164,20 @@ class Lista_tarefas():
 
         # começa vendo as tarefas selecionadas
         if tarefa_selecionada:
-            indice = tarefa_selecionada[0]
+            self.indice = tarefa_selecionada[0]
 
-            texto_tarefa = self.caixa_de_tarefas.get(indice)
+            self.texto_tarefa = self.caixa_de_tarefas.get(self.indice)
 
             simbolo = "✔"
 
         #verifica se a tarefa ja ta concluida
-            if not texto_tarefa.startswith(simbolo):
-                tarefa_concluida = (f"{texto_tarefa}{simbolo}")
+            if not self.texto_tarefa.startswith(simbolo):
+                tarefa_concluida = (f"{self.texto_tarefa}{simbolo}")
 
                 #atualizar a lista(deletar a antiga e recolocar)
-                self.caixa_de_tarefas.delete(indice)
+                self.caixa_de_tarefas.delete(self.indice)
                 #substituir a tarefa na mesma posição
-                self.caixa_de_tarefas.insert(indice,tarefa_concluida)
+                self.caixa_de_tarefas.insert(self.indice,tarefa_concluida)
 #----------------------------------------------------------------------------------
 
         conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
@@ -183,9 +185,10 @@ class Lista_tarefas():
 
         cursor.execute(f"""
                         UPDATE tarefa
-                        SET status = 1
-                        WHERE codigo = {tarefa_selecionada[0]+1}
-                       """)
+                        SET descricao_tarefa = (?)
+                        WHERE descricao_tarefa = (?)
+                    """,
+                        [self.texto_tarefa,self.texto_tarefa])
 
         conexao.commit()
         cursor.close()

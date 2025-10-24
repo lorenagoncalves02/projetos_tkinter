@@ -1,6 +1,8 @@
 import ttkbootstrap as tk
 import tkinter.messagebox
 import tkinter
+from class_cadastro import Janela_cadastro
+import sqlite3
 
 class Login():
 
@@ -51,40 +53,54 @@ class Login():
         tk.Button(frame_botao,
                   text= "sair",
                   command=self.sair).pack(side="right",padx=20)
+        
+        tk.Button(self.janela,
+                  text="cadastrar",
+                  style="primary",
+                  command=self.abrir_tela_cadastro).pack(pady=10)
+
 #-------------------------------------------------------------------------------
     def login_entrar(self):
-        usuario = self.colocar_usuario.get()
-        senha = self.colocar_senha.get()
+        usuario = (self.colocar_usuario.get())
+        senha = (self.colocar_senha.get())
 
+        conexao = sqlite3.connect("./bd_lista_tarefa.sqlite")
+        cursor = conexao.cursor()
 
-        if usuario == "Lorena" or senha == "1234":
-            tkinter.messagebox.showinfo(title = "Login efetuado",message=(f"Bem-vindo, {usuario}. Pressione 'ok' para continuar"))
+        cursor.execute(
+                """
+                SELECT nome, usuario FROM usuario
+                WHERE usuario = ? AND senha = ?;
+                """,
+                [usuario,senha]
+            )
+ 
+        resultado = cursor.fetchone()
+
+        conexao.close()
+
+        #se o resultado for diferente de 
+        if resultado:
+            tkinter.messagebox.showinfo(title = "Login efetuado",message=f"Bem-vindo, {usuario}. Pressione 'ok' para continuar")
             self.janela.destroy()
             #reexiba a janela principal
             self.janela_pai.deiconify()
         #     janela_tarefas = Lista_tarefas()
         #     janela_tarefas.run()
 
-
-
         else:
             tkinter.messagebox.showerror(title= "ERRO", message="valores incorretos")
 
+    def abrir_tela_cadastro(self):
+        Janela_cadastro(self.janela)
+
     def sair(self):
-        self.sair = tkinter.messagebox.askyesno(title= "SAIR", message="Você deseja mesmo sair?")
+        self.resposta = tkinter.messagebox.askyesno(title= "SAIR", message="Você deseja mesmo sair?")
 
-        if self.sair == True:
+        if self.resposta == True:
             exit()
-
 
 
     def run(self):
         """Iniciar a janela"""
         self.janela.mainloop()
-
-
-if __name__ == "__main__":
-    login = Login()
-    login.run()
-
-
