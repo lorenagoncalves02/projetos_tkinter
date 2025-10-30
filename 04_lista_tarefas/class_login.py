@@ -6,10 +6,11 @@ import sqlite3
 
 class Login():
 
-    def __init__(self, janela_pai):
-        self.janela_pai = janela_pai
+    def __init__(self, classe_pai):
+        self.janela_pai = classe_pai.janela
+        self.classe_pai = classe_pai
 
-        self.janela = tk.Toplevel(janela_pai)
+        self.janela = tk.Toplevel(self.janela_pai)
         self.janela.title("Login")
 
         self.janela.geometry("800x600") # arrumar o tamanho da tela
@@ -64,7 +65,7 @@ class Login():
         usuario = (self.colocar_usuario.get())
         senha = (self.colocar_senha.get())
 
-        conexao = sqlite3.connect("./bd_lista_tarefa.sqlite")
+        conexao = sqlite3.connect("bd_lista_tarefa.sqlite")
         cursor = conexao.cursor()
 
         cursor.execute(
@@ -80,11 +81,12 @@ class Login():
         conexao.close()
 
         #se o resultado for diferente de 
-        if resultado:
+        if resultado != None:
             tkinter.messagebox.showinfo(title = "Login efetuado",message=f"Bem-vindo, {usuario}. Pressione 'ok' para continuar")
             self.janela.destroy()
             #reexiba a janela principal
             self.janela_pai.deiconify()
+            self.classe_pai.usuario_logado = usuario
         #     janela_tarefas = Lista_tarefas()
         #     janela_tarefas.run()
 

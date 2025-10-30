@@ -9,6 +9,10 @@ import sqlite3
 
 class Lista_tarefas():
     def __init__(self):
+
+        #usuario que esta logado
+        self.usuario_logado = None
+
         self.janela = tk.Window(themename="morph")
 
         self.janela.title("Tarefas")
@@ -58,7 +62,7 @@ class Lista_tarefas():
         #conectando ao banco de dados
         #dar nome pro banco de dados
         #colocar o nome da pasta onde eu quero guardar o banco de dados
-        conexao = sqlite3.connect("./bd_lista_tarefa.sqlite")
+        conexao = sqlite3.connect("bd_lista_tarefa.sqlite")
 
         #cursor é responsável por comandar o banco de dados
         cursor = conexao.cursor()
@@ -68,7 +72,7 @@ class Lista_tarefas():
                             CREATE TABLE IF NOT EXISTS tarefa(
                             codigo integer primary key autoincrement, 
                             descricao_tarefa varchar(200),
-                            status BOOLEAN 
+                            usuario VARCHAR (20)
                             );
                          """)
         
@@ -79,8 +83,7 @@ class Lista_tarefas():
         cursor.close()
         conexao.close()
 
-        janela_login = Login(self.janela)
-
+        Login(self)
 
      # esconder a tarefa
         self.janela.withdraw()
@@ -91,13 +94,12 @@ class Lista_tarefas():
 
     def atualizar_lista(self):
         #atualizar a lista
-        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+        conexao = sqlite3.connect("bd_lista_tarefa.sqlite")
 
         cursor = conexao.cursor()
         cursor.execute("""
                         SELECT codigo, descricao_tarefa FROM tarefa;
                        """)
-        
         lista_de_tarefas = cursor.fetchall()
 
 
@@ -115,13 +117,13 @@ class Lista_tarefas():
         tarefa = self.entry_adicionar.get()
 
         #criando a tabela pra conseguir inserir os dados
-        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+        conexao = sqlite3.connect("bd_lista_tarefa.sqlite")
         cursor = conexao.cursor()
 
         cursor.execute("""
-                        INSERT INTO tarefa(descricao_tarefa,status)
+                        INSERT INTO tarefa(descricao_tarefa,usuario)
                         VALUES(?,?)
-                       """,(tarefa,0))
+                       """,(tarefa,self.usuario_logado))
 
         conexao.commit()
         cursor.close()
@@ -133,7 +135,8 @@ class Lista_tarefas():
         # funçao p botao de excluir
     def excluir_tarefa(self):
         #selecionar os itens que quer excluir
-        excluir = self.caixa_de_tarefas.curselection() #retorna o indice selecionado
+        excluir = self.caixa_de_tarefas.curselection()
+        excluir = excluir[0] + 1 #retorna o indice selecionado
         print(excluir)
 
         if excluir:
@@ -143,14 +146,14 @@ class Lista_tarefas():
             messagebox.showerror(message="Selecione um item antes de excluir")
 #-------------------------------------------------------------------------
 
-        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+        conexao = sqlite3.connect("bd_lista_tarefa.sqlite")
         cursor = conexao.cursor()
 
         cursor.execute("""
                         DELETE from tarefa
-                        WHERE descricao_tarefa = (?)
+                        WHERE descricao_tarefa = ?
                        """,
-                       [])
+                       [excluir])
 
         conexao.commit()
         cursor.close()
@@ -161,7 +164,6 @@ class Lista_tarefas():
     def concluir_tarefa(self):
         tarefa_selecionada = self.caixa_de_tarefas.curselection()
         
-
         # começa vendo as tarefas selecionadas
         if tarefa_selecionada:
             self.indice = tarefa_selecionada[0]
@@ -180,7 +182,7 @@ class Lista_tarefas():
                 self.caixa_de_tarefas.insert(self.indice,tarefa_concluida)
 #----------------------------------------------------------------------------------
 
-        conexao = sqlite3.connect("04_lista_tarefas/bd_lista_tarefa.sqlite")
+        conexao = sqlite3.connect("bd_lista_tarefa.sqlite")
         cursor = conexao.cursor()
 
         cursor.execute(f"""

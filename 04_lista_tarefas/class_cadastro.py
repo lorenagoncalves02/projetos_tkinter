@@ -54,17 +54,16 @@ class Janela_cadastro():
 
     def criar_tabela_usuario(self):
 
-        conexao = sqlite3.connect("./bd_lista_tarefa.sqlite")
+        conexao = sqlite3.connect("bd_lista_tarefa.sqlite")
 
         cursor = conexao.cursor()
 
         cursor.execute("""
-                        CREATE TABLE IF NOT EXISTS usuario (
+                            CREATE TABLE IF NOT EXISTS usuario(
                             nome VARCHAR(80),
                             usuario VARCHAR(20) primary key,
                             senha VARCHAR(20))
                        """)
-        
         conexao.commit()
         conexao.close()
 
@@ -75,7 +74,7 @@ class Janela_cadastro():
             usuario = self.entry_usuario.get()
             senha = self.entry_senha.get()
             
-            conexao = sqlite3.connect("./bd_lista_tarefa.sqlite")
+            conexao = sqlite3.connect("bd_lista_tarefa.sqlite")
 
             cursor = conexao.cursor()
 
